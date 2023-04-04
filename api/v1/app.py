@@ -3,7 +3,7 @@
 from flask import Flask, make_response
 from models import storage
 from api.v1.views import app_views
-import os
+from os import getenv as env
 from flask_cors import CORS
 
 app = Flask(__name__)
