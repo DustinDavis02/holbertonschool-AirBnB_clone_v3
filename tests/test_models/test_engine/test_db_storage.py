@@ -67,7 +67,7 @@ test_db_storage.py'])
             self.assertTrue(len(func[1].__doc__) >= 1,
                             "{:s} method needs a docstring".format(func[0]))
 
-@unittest.skipIf(type(models.storage) == FileStorage, "Testing FileStorage")
+     @unittest.skipIf(type(models.storage) == FileStorage, "Testing FileStorage")
 class TestStateDBInstances(unittest.TestCase):
     """DBStorage State Tests"""
     def tearDownClass():
