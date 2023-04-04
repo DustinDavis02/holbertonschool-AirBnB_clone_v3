@@ -1,5 +1,6 @@
 #!/usr/bin/python3
 """Package initializer for views module"""
+from api.v1.views.cities import *
 from api.v1.views.states import *
 from flask import Blueprint
 
