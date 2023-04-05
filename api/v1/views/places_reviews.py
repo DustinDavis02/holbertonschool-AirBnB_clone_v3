@@ -10,9 +10,7 @@ from models.user import User
 
 @app_views.route('/places/<place_id>/reviews', methods=['GET'])
 def get_reviews(place_id):
-    """
-    Retrieves the list of all Review objects of a Place
-    """
+    """Retrieves the list of all Review objects of a Place"""
     place = storage.get("Place", place_id)
     if place is None:
         abort(404)
@@ -22,10 +20,19 @@ def get_reviews(place_id):
 
 @app_views.route('/reviews/<review_id>', methods=['GET'])
 def get_review(review_id):
-    """
-    Retrieves a Review object
-    """
+    """Retrieves a Review object"""
     review = storage.get("Review", review_id)
     if review is None:
         abort(404)
     return jsonify(review.to_dict())
+
+
+@app_views.route('/reviews/<review_id>', methods=['DELETE'])
+def delete_review(review_id):
+    """Deletes a Review object"""
+    review = storage.get("Review", review_id)
+    if review is None:
+        abort(404)
+    storage.delete(review)
+    storage.save()
+    return jsonify({}), 200
