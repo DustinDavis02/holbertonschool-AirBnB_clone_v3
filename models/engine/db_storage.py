@@ -76,23 +76,18 @@ class DBStorage:
         self.__session.remove()
 
     def get(self, cls, id):
-        """gets object by cls and id"""
-        if type(cls) is str:
-            cls = self.class_dictionary.get(cls)
+        """Retrieve an object from the database"""
         if cls and id:
-            fetch = "{}.{}".format(cls.__name__, id)
-            all_obj = self.all(cls)
-            return all_obj.get(fetch)
+            obj = self.__session.query(cls).filter_by(id=id).first()
+            return obj
         return None
-
+    
     def count(self, cls=None):
-        """returns count of objs in cls"""
-        return (len(self.all(cls)))
-
-    def drop_table(self, cls):
-        """drops specified table"""
-        metadata = sqlalchemy.MetaData()
-        metadata.reflect(bind=self.__engine)
-        table = metadata.tables.get(cls.__tablename__)
-        self.__session.execute(table.delete())
-        self.save()
+        """Count the number of objects in the database"""
+        if cls:
+            count = self.__session.query(cls).count()
+        else:
+            count = 0
+            for clss in classes:
+                count += self.__session.query(classes[clss]).count()
+        return count
