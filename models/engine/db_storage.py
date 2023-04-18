@@ -75,16 +75,19 @@ class DBStorage:
         """call remove() method on the private session attribute"""
         self.__session.remove()
 
-  def get(self, cls, id):
-        """gets object by cls and id"""
-        if type(cls) is str:
-            cls = self.class_dictionary.get(cls)
+    def get(self, cls, id):
+        """Retrieve an object from the database"""
         if cls and id:
-            fetch = "{}.{}".format(cls.__name__, id)
-            all_obj = self.all(cls)
-            return all_obj.get(fetch)
+            obj = self.__session.query(cls).filter_by(id=id).first()
+            return obj
         return None
-
+    
     def count(self, cls=None):
-        """returns count of objs in cls"""
-        return (len(self.all(cls)))
+        """Count the number of objects in the database"""
+        if cls:
+            count = self.__session.query(cls).count()
+        else:
+            count = 0
+            for clss in classes:
+                count += self.__session.query(classes[clss]).count()
+        return count
